@@ -6,7 +6,7 @@
                      <div class="form-group row border-bottom">
                          <label for="id" class="col-sm-3 col-form-label">ID</label>
                          <input type="text" class="col-sm-9 form-control-plaintext" readonly id="id"
-                                v-model="task.id">
+                                v-model="task.id>
                      </div>
                      <div class="form-group row border-bottom">
                          <label for="title" class="col-sm-3 col-form-label">Title</label>
@@ -31,20 +31,20 @@
  
  <script>
      export default {
-        props: {
-            taskId: String
+         props: {
+             taskId: String
          },
-        data: function(){
-            return{
+          data: function () {
+            return {
                 task: {}
             }
         },
         methods: {
             getTask() {
                 axios.get('/api/tasks/' + this.taskId)
-                .then(res) => {
-                    this.task = res.data;
-                });
+                    .then((res) => {
+                        this.task = res.data;
+                    });
             }
         },
         mounted() {
