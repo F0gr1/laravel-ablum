@@ -22,3 +22,9 @@ Route::post('/tasks', 'App\Http\Controllers\TaskController@store');
 Route::get('/tasks/{task}', 'App\Http\Controllers\TaskController@show');
 Route::put('/tasks/{task}', 'App\Http\Controllers\TaskController@update');
 Route::delete('/tasks/{task}', 'App\Http\Controllers\TaskController@destroy');
+
+Route::get('/images', 'App\Http\Controllers\ImageApiController@index');
+Route::post('/images', 'App\Http\Controllers\ImageApiController@store');
+Route::get('/images/{task}', 'App\Http\Controllers\ImageApiController@show');
+Route::put('/images/{task}', 'App\Http\Controllers\ImageApiController@update');
+Route::delete('/images/{task}', 'App\Http\Controllers\ImageApiController@destroy');
