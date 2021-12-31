@@ -17,11 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/tasks', 'App\Http\Controllers\TaskController@index');
-Route::post('/tasks', 'App\Http\Controllers\TaskController@store');
-Route::get('/tasks/{task}', 'App\Http\Controllers\TaskController@show');
-Route::put('/tasks/{task}', 'App\Http\Controllers\TaskController@update');
-Route::delete('/tasks/{task}', 'App\Http\Controllers\TaskController@destroy');
+Route::get('/albums', 'App\Http\Controllers\AlbumController@index');
+Route::post('/albums', 'App\Http\Controllers\AlbumController@store');
+Route::get('/albums/{task}', 'App\Http\Controllers\AlbumController@show');
+Route::put('/albums/{task}', 'App\Http\Controllers\AlbumController@update');
+Route::delete('/albums/{task}', 'App\Http\Controllers\AlbumController@destroy');
 
 Route::get('/images', 'App\Http\Controllers\ImageApiController@index');
 Route::post('/images', 'App\Http\Controllers\ImageApiController@store');
