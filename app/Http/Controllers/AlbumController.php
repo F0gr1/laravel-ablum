@@ -34,13 +34,13 @@ class AlbumController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title' => 'required|max:7',
+            'album' => 'required|max:7',
         ], [
-            'title.required' => 'タイトルを入力して下さい',
-            'title.max' => '7文字以内で入力して下さい',
+            'album.required' => 'タイトルを入力して下さい',
+            'album.max' => '7文字以内で入力して下さい',
         ]);
             $Album = new Album();
-            $Album->title = $request->title;
+            $Album->album = $request->album;
             $Album->save();
             return ['success' => '登録しました!'];
     }
