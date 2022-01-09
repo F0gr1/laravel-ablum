@@ -4,10 +4,10 @@
             <nav class="navbar navbar-dark">
                 <span class="navbar-brand mb-2 h1">Vue Sample</span>
                 <div>
-                    <router-link v-bind:to="{name: 'image.list'}">
+                    <router-link v-bind:to="{name: 'album.list'}">
                         <button class="btn btn-outline-success">List</button>
                     </router-link>
-                    <router-link v-bind:to="{name: 'image.create'}">
+                    <router-link v-bind:to="{name: 'album.create'}">
                         <button class="btn btn-success">ADD</button>
                     </router-link>
                 </div>
