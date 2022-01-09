@@ -8,7 +8,7 @@ class ImageApiController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -18,7 +18,7 @@ class ImageApiController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
+     * @param int $id
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -35,7 +35,7 @@ class ImageApiController extends Controller
             request()->file->storeAs('public', $file_name);
             $image = new Image();
             $image->path = 'storage/' . $file_name;
-            $image->title_id = $request->title_id;
+            $image->title_id = $request->$id;
             $image->save();
             return ['success' => '登録しました!'];
         }
