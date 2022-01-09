@@ -34,7 +34,7 @@ const router = new VueRouter({
     mode: 'history',
     routes: [
         {
-            path: '/images',
+            path: '/images/',
             name: 'image.list',
             component: CardImageComponent,
             props: true
@@ -47,13 +47,13 @@ const router = new VueRouter({
         },
         {
             path: '/albums',
-            name: 'albums.list',
+            name: 'album.list',
             component: CardAlbumComponent,
             props: true
         },
         {
             path: '/albums/create',
-            name: 'albums.create',
+            name: 'album.create',
             component: CreateCardAlbumComponent,
             props: true
         },

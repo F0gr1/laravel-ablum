@@ -2075,6 +2075,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2122,72 +2124,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       message: "",
-      file: "",
-      title: "",
-      view: true,
-      images: {},
-      confirmedImage: ""
+      album: "",
+      view: true
     };
   },
-  created: function created() {
-    this.getImage();
-  },
   methods: {
-    getImage: function getImage() {
+    uploadImage: function uploadImage() {
       var _this = this;
 
-      axios.get("/api/albums/").then(function (response) {
-        _this.images = response.data;
-      })["catch"](function (err) {
-        _this.message = err;
-      });
-    },
-    confirmImage: function confirmImage(e) {
-      this.message = "";
-      this.file = e.target.files[0];
-
-      if (!this.file.type.match("image.*")) {
-        this.message = "画像ファイルを選択して下さい";
-        this.confirmedImage = "";
-        return;
-      }
-
-      this.createImage(this.file);
-    },
-    createImage: function createImage(file) {
-      var _this2 = this;
-
-      var reader = new FileReader();
-      reader.readAsDataURL(file);
-
-      reader.onload = function (e) {
-        _this2.confirmedImage = e.target.result;
-      };
-    },
-    uploadImage: function uploadImage() {
-      var _this3 = this;
-
       var data = new FormData();
-      data.append("title", this.title);
+      data.append("album", this.album);
       axios.post("/api/albums/", data).then(function (response) {
-        _this3.getImage();
-
-        _this3.message = response.data.success;
-        _this3.confirmedImage = "";
-        _this3.title = "";
-        _this3.file = ""; //ファイルを選択のクリア
-
-        _this3.view = false;
-
-        _this3.$nextTick(function () {
-          this.view = true;
+        _this.$router.push({
+          name: 'album.list'
         });
       })["catch"](function (err) {
-        _this3.message = err.response.data.errors;
+        _this.message = err.response.data.errors;
       });
     }
   }
@@ -2239,51 +2203,6 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         _this.message = err;
       });
-    },
-    confirmImage: function confirmImage(e) {
-      this.message = "";
-      this.file = e.target.files[0];
-
-      if (!this.file.type.match("image.*")) {
-        this.message = "画像ファイルを選択して下さい";
-        this.confirmedImage = "";
-        return;
-      }
-
-      this.createImage(this.file);
-    },
-    createImage: function createImage(file) {
-      var _this2 = this;
-
-      var reader = new FileReader();
-      reader.readAsDataURL(file);
-
-      reader.onload = function (e) {
-        _this2.confirmedImage = e.target.result;
-      };
-    },
-    uploadImage: function uploadImage() {
-      var _this3 = this;
-
-      var data = new FormData();
-      data.append("file", this.file);
-      data.append("title", this.title);
-      axios.post("/api/images/", data).then(function (response) {
-        _this3.getImage();
-
-        _this3.message = response.data.success;
-        _this3.confirmedImage = "";
-        _this3.title = "";
-        _this3.file = ""; //ファイルを選択のクリア
-
-        _this3.view = false;
-
-        _this3.$nextTick(function () {
-          this.view = true;
-        });
-      })["catch"](function (err) {
-        _this3.message = err.response.data.errors;
-      });
     }
   }
 });
@@ -2301,9 +2220,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
-//
-//
 //
 //
 //
@@ -2370,6 +2286,7 @@ __webpack_require__.r(__webpack_exports__);
       var data = new FormData();
       data.append("file", this.file);
       data.append("title", this.title);
+      data.append("id", this.$router.params.id);
       axios.post("/api/images/", data).then(function (response) {
         _this3.getImage();
 
@@ -2504,7 +2421,7 @@ Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_5__["default"]);
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_5__["default"]({
   mode: 'history',
   routes: [{
-    path: '/images',
+    path: '/images/',
     name: 'image.list',
     component: _components_CardImageComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
     props: true
@@ -2515,12 +2432,12 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_5__["default"]({
     props: true
   }, {
     path: '/albums',
-    name: 'albums.list',
+    name: 'album.list',
     component: _components_Album_CardAlbumComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
     props: true
   }, {
     path: '/albums/create',
-    name: 'albums.create',
+    name: 'album.create',
     component: _components_Album_CreateCardAlbumComponent__WEBPACK_IMPORTED_MODULE_4__["default"],
     props: true
   }]
@@ -39051,15 +38968,30 @@ var render = function() {
         "div",
         { key: Album.id, staticClass: "card", staticStyle: { width: "18rem" } },
         [
-          _c("div", { staticClass: "card-body" }, [
-            _c("h5", { staticClass: "card-title" }, [
-              _vm._v(_vm._s(Album.album))
-            ]),
-            _vm._v(" "),
-            _c("a", { staticClass: "btn btn-primary", attrs: { href: "#" } }, [
-              _vm._v("Go somewhere")
-            ])
-          ])
+          _c(
+            "div",
+            { staticClass: "card-body" },
+            [
+              _c("h5", { staticClass: "card-title" }, [
+                _vm._v(_vm._s(Album.album))
+              ]),
+              _vm._v(" "),
+              _c(
+                "router-link",
+                {
+                  attrs: {
+                    to: { name: "image.list", params: { id: Album.id } }
+                  }
+                },
+                [
+                  _c("button", { staticClass: "btn btn-primary" }, [
+                    _vm._v("->")
+                  ])
+                ]
+              )
+            ],
+            1
+          )
         ]
       )
     }),
@@ -39089,34 +39021,62 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("p", [
-      _vm._v("タイトル："),
-      _c("input", {
-        directives: [
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-sm-6" }, [
+        _c(
+          "form",
           {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.title,
-            expression: "title"
-          }
-        ],
-        attrs: { type: "text" },
-        domProps: { value: _vm.title },
-        on: {
-          input: function($event) {
-            if ($event.target.composing) {
-              return
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.uploadImage.apply(null, arguments)
+              }
             }
-            _vm.title = $event.target.value
-          }
-        }
-      })
-    ]),
-    _vm._v(" "),
-    _c("button", { on: { click: _vm.uploadImage } }, [_vm._v("アップロード")]),
-    _vm._v(" "),
-    _c("p")
+          },
+          [
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-sm-3 col-form-label",
+                  attrs: { for: "title" }
+                },
+                [_vm._v("Title")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.album,
+                    expression: "album"
+                  }
+                ],
+                staticClass: "col-sm-9 form-control",
+                attrs: { type: "text", id: "title" },
+                domProps: { value: _vm.album },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.album = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+              [_vm._v("Submit")]
+            )
+          ]
+        )
+      ])
+    ])
   ])
 }
 var staticRenderFns = []
@@ -39315,13 +39275,13 @@ var render = function() {
         _c(
           "div",
           [
-            _c("router-link", { attrs: { to: { name: "image.list" } } }, [
+            _c("router-link", { attrs: { to: { name: "album.list" } } }, [
               _c("button", { staticClass: "btn btn-outline-success" }, [
                 _vm._v("List")
               ])
             ]),
             _vm._v(" "),
-            _c("router-link", { attrs: { to: { name: "image.create" } } }, [
+            _c("router-link", { attrs: { to: { name: "album.create" } } }, [
               _c("button", { staticClass: "btn btn-success" }, [_vm._v("ADD")])
             ])
           ],
