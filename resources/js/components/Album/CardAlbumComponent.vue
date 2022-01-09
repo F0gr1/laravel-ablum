@@ -3,7 +3,9 @@
         <div v-for="Album in Albums" :key="Album.id" class="card" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title">{{ Album.album }}</h5>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <router-link v-bind:to="{name: 'image.list' , params: { id : Album.id}}">
+                        <button  class="btn btn-primary">-></button>
+                </router-link>
             </div>
         </div>
     </div>

@@ -1,8 +1,16 @@
 <template>
-    <div>
-        <p>タイトル：<input type="text" v-model="title" /></p>
-            <button @click="uploadImage">アップロード</button>
-        </p>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm-6">
+                <form v-on:submit.prevent="uploadImage">
+                    <div class="form-group row">
+                        <label for="title" class="col-sm-3 col-form-label">Title</label>
+                        <input type="text" class="col-sm-9 form-control" id="title"  v-model="album">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -10,62 +18,18 @@ export default {
     data() {
         return {
             message: "",
-            file: "",
-            title: "",
+            album: "",
             view: true,
-            images: {},
-            confirmedImage: ""
         };
     },
-    created: function() {
-        this.getImage();
-    },
     methods: {
-        getImage() {
-            axios
-                .get("/api/albums/")
-                .then(response => {
-                    this.images = response.data;
-                })
-                .catch(err => {
-                    this.message = err;
-                });
-        },
-        confirmImage(e) {
-            this.message = "";
-            this.file = e.target.files[0];
-            if (!this.file.type.match("image.*")) {
-                this.message = "画像ファイルを選択して下さい";
-                this.confirmedImage = "";
-                return;
-            }
-            this.createImage(this.file);
-        },
-        createImage(file) {
-            let reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = e => {
-                this.confirmedImage = e.target.result;
-            };
-        },
         uploadImage() {
             let data = new FormData();
-            data.append("title", this.title);
- 
+            data.append("album", this.album);
             axios
                 .post("/api/albums/", data)
                 .then(response => {
-                    this.getImage();
-                    this.message = response.data.success;
-                    this.confirmedImage = "";
-                    this.title = "";
-                    this.file = "";
- 
-                    //ファイルを選択のクリア
-                    this.view = false;
-                    this.$nextTick(function() {
-                        this.view = true;
-                    });
+                    this.$router.push({name: 'album.list'});
                 })
                 .catch(err => {
                     this.message = err.response.data.errors;
